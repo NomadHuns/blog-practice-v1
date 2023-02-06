@@ -27,8 +27,10 @@ public class UserService {
     }
 
     public User login(LoginReqDto loginReqDto) {
-        User user = new User();
-        user.setUsername("cos");
-        return user;
+        User principal = userRepository.findByUsernameAndPassword(loginReqDto.getUsername(), loginReqDto.getPassword());
+        if (principal == null) {
+            throw new CustomException("username이나 password가 일치하지 않습니다.");
+        }
+        return principal;
     }
 }
