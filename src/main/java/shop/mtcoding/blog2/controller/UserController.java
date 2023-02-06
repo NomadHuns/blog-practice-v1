@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
-import shop.mtcoding.blog2.dto.UserReq.JoinReqDto;
-import shop.mtcoding.blog2.dto.UserReq.LoginReqDto;
+import shop.mtcoding.blog2.dto.user.UserReq.JoinReqDto;
+import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.UserService;
