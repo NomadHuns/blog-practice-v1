@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String join(JoinReqDto joinReqDto){
-        if(joinReqDto.getUsername().isEmpty() || joinReqDto.getUsername() == null){
+    public String join(JoinReqDto joinReqDto) {
+        if (joinReqDto.getUsername().isEmpty() || joinReqDto.getUsername() == null) {
             throw new CustomException("username을 입력하세요.");
         }
         if (joinReqDto.getPassword().isEmpty() || joinReqDto.getPassword() == null) {
@@ -40,7 +40,7 @@ public class UserController {
         if (joinReqDto.getEmail().isEmpty() || joinReqDto.getEmail() == null) {
             throw new CustomException("email을 입력하세요.");
         }
-        userService.join();
+        userService.join(joinReqDto);
         return "redirect:/loginForm";
     }
 }
