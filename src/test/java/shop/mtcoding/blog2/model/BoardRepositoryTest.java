@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 
 @MybatisTest
@@ -17,11 +18,10 @@ public class BoardRepositoryTest {
     @Autowired
     private BoardRepository boardRepository;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
     public void findAllWithUser_test() throws Exception {
-        // given
-        ObjectMapper objectMapper = new ObjectMapper();
-
         // when
         List<BoardListRespDto> boardListRespDtoList = boardRepository.findAllWithUser();
         String responseBody = objectMapper.writeValueAsString(boardListRespDtoList);
@@ -30,5 +30,18 @@ public class BoardRepositoryTest {
         System.out.println("디버그 : " + boardListRespDtoList.size());
         System.out.println("디버그 : " + responseBody);
         assertThat(boardListRespDtoList.get(3).getUsername()).isEqualTo("ssar");
+    }
+
+    @Test
+    public void findByIdWithUser_test() throws Exception {
+        // given
+
+        // when
+        BoardDetailRespDto board = boardRepository.findByIdWithUser(1);
+        String responseBody = objectMapper.writeValueAsString(board);
+
+        // verify
+        System.out.println("디버그 : " + responseBody);
+        assertThat(board.getUsername()).isEqualTo("ssar");
     }
 }
