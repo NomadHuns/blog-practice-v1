@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import shop.mtcoding.blog2.dto.UserReq.JoinReqDto;
-import shop.mtcoding.blog2.dto.UserReq.LoginReqDto;
+import shop.mtcoding.blog2.dto.user.UserReq.JoinReqDto;
+import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.model.UserRepository;

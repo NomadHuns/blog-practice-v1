@@ -9,7 +9,7 @@ create table user_tb(
 create table board_tb(
     id int auto_increment primary key,
     title varchar(100) not null,
-    content varchar not null,
+    content longtext not null,
     user_id int not null,
     created_at timestamp
 );

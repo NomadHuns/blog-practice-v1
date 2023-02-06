@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
-import shop.mtcoding.blog2.dto.BoardReq.BoardSaveReqDto;
+import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.BoardService;

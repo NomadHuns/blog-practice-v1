@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import shop.mtcoding.blog2.dto.BoardReq.BoardSaveReqDto;
+import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.BoardRepository;
 
