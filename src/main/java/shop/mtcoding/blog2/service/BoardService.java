@@ -33,4 +33,7 @@ public class BoardService {
         BoardDetailRespDto board = boardRepository.findByIdWithUser(id);
         return board;
     }
+
+    public void delete(int id, int userId) {
+    }
 }

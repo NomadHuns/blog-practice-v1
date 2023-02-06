@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,16 @@ public class BoardController {
             throw new CustomException("content를 입력하세요.");
         }
         boardService.save(boardSaveReqDto, principal.getId());
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/board/{id}")
+    public String delete(@PathVariable("id") int id) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
+        }
+        boardService.delete(id, principal.getId());
         return "redirect:/";
     }
 }
