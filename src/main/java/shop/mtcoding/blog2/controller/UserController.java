@@ -45,15 +45,12 @@ public class UserController {
         if (joinReqDto.getEmail().isEmpty() || joinReqDto.getEmail() == null) {
             throw new CustomException("이메일을 입력하세요.");
         }
-        int result = userService.join(joinReqDto);
-        if (result != 1) {
-            throw new CustomException("회원가입 실패");
-        }
+        userService.join(joinReqDto);
         return "redirect:/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(LoginReqDto loginReqDto){
+    public String login(LoginReqDto loginReqDto) {
         if (loginReqDto.getUsername().isEmpty() || loginReqDto.getUsername() == null) {
             throw new CustomException("유저이름을 입력하세요.");
         }
@@ -66,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout() {
         session.invalidate();
         return "redirect:/";
     }

@@ -16,13 +16,15 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public int join(JoinReqDto joinReqDto) {
+    public void join(JoinReqDto joinReqDto) {
         User principal = userRepository.findByUsername(joinReqDto.getUsername());
         if (principal != null) {
             throw new CustomException("동일한 유저네임이 존재합니다.");
         }
         int result = userRepository.insert(joinReqDto.getUsername(), joinReqDto.getPassword(), joinReqDto.getEmail());
-        return result;
+        if (result != 1) {
+            throw new CustomException("회원가입 실패");
+        }
     }
 
     @Transactional(readOnly = true)
