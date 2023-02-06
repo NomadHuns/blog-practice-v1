@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
+import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.BoardRepository;
@@ -26,5 +27,10 @@ public class BoardService {
     public List<BoardListRespDto> getBoardList() {
         List<BoardListRespDto> boardListRespDtoList = boardRepository.findAllWithUser();
         return boardListRespDtoList;
+    }
+
+    public BoardDetailRespDto getBoardDetail(int id) {
+        BoardDetailRespDto board = boardRepository.findByIdWithUser(id);
+        return board;
     }
 }

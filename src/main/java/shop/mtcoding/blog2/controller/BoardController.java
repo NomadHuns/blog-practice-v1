@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
+import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
@@ -32,7 +33,9 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable("id") int id) {
+    public String detail(@PathVariable("id") int id, Model model) {
+        BoardDetailRespDto board = boardService.getBoardDetail(id);
+        model.addAttribute("board", board);
         return "board/detail";
     }
 

@@ -7,15 +7,15 @@
         </div>
 
         <div class="mb-2">
-            글 번호 : <span id="id"><i>3 </i></span> 작성자 : <span><i>ssar </i></span>
+            글 번호 : <span id="id"><i>${board.id} </i></span> 작성자 : <span><i>${board.username} </i></span>
         </div>
 
         <div>
-            <h3>제목입니다</h3>
+            <h3>${board.title}</h3>
         </div>
         <hr />
         <div>
-            <div>내용입니다</div>
+            <div>${board.content}</div>
         </div>
         <hr />
 
