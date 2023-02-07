@@ -55,4 +55,7 @@ public class BoardService {
             // 로그를 남겨야함 (DB or File)
         }
     }
+
+    public void update() {
+    }
 }
