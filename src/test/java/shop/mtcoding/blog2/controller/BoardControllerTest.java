@@ -1,10 +1,14 @@
 package shop.mtcoding.blog2.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,9 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 import shop.mtcoding.blog2.model.User;
 
 @AutoConfigureMockMvc
@@ -25,6 +32,9 @@ public class BoardControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper om;
 
     private MockHttpSession mockSession;
 
@@ -61,4 +71,21 @@ public class BoardControllerTest {
         resultActions.andExpect(status().is3xxRedirection());
     }
 
+    @Test
+    public void main_test() throws Exception {
+        // given
+
+        // when
+        ResultActions resultActions = mvc.perform(get("/"));
+        Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
+        List<BoardListRespDto> dtos = (List<BoardListRespDto>) map.get("boardList");
+        String model = om.writeValueAsString(dtos);
+        System.out.println("디버그 : " + model);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        assertThat(dtos.size()).isEqualTo(10);
+        assertThat(dtos.get(3).getUsername()).isEqualTo("ssar");
+        assertThat(dtos.get(7).getUsername()).isEqualTo("cos");
+    }
 }
