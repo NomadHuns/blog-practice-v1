@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
+import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
+import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.BoardRepository;
 
 @Transactional(readOnly = true)
@@ -37,6 +39,20 @@ public class BoardService {
         return dto;
     }
 
-    public void delete(int id) {
+    @Transactional
+    public void delete(int id, int userId) {
+        Board boardPS = boardRepository.findById(id);
+        if (boardPS == null) {
+            throw new CustomApiException("존재하지 않는 게시물입니다");
+        }
+        if (boardPS.getUserId() != userId) {
+            throw new CustomApiException("해당 게시글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
+        }
+        try {
+            boardRepository.deleteById(boardPS.getId());
+        } catch (Exception e) {
+            throw new CustomApiException("서버에 일시적인 문제가 생겼습니다", HttpStatus.INTERNAL_SERVER_ERROR);
+            // 로그를 남겨야함 (DB or File)
+        }
     }
 }

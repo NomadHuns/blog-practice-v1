@@ -79,7 +79,7 @@ public class BoardController {
         if (principal == null) {
             throw new CustomApiException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
         }
-        boardService.delete(id);
+        boardService.delete(id, principal.getId());
         return new ResponseEntity<>(new ResponseDto<>(1, "삭제 성공", null), HttpStatus.OK);
     }
 }
