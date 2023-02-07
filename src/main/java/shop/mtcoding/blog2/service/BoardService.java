@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
+import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.BoardRepository;
@@ -29,5 +30,10 @@ public class BoardService {
     public List<BoardListRespDto> getBoardList() {
         List<BoardListRespDto> boardList = boardRepository.findAllWithUser();
         return boardList;
+    }
+
+    public BoardDetailRespDto getBoard(int id) {
+        BoardDetailRespDto dto = boardRepository.findByIdWithUser(id);
+        return dto;
     }
 }
