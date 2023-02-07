@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,6 +91,12 @@ public class BoardController {
     @PutMapping("/board/{id}")
     public @ResponseBody ResponseEntity<?> update(@PathVariable("id") int id,
             @RequestBody BoardUpdateReqDto boardUpdateReqDto) {
+        if (boardUpdateReqDto.getTitle().isEmpty() || boardUpdateReqDto.getTitle() == null) {
+            throw new CustomApiException("제목을 입력하세요");
+        }
+        if (boardUpdateReqDto.getContent().isEmpty() || boardUpdateReqDto.getContent() == null) {
+            throw new CustomApiException("내용을 입력하세요");
+        }
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomApiException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
