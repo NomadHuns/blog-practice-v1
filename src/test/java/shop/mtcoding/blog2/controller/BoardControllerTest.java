@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.blog2.dto.board.BoardReq.BoardUpdateReqDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 import shop.mtcoding.blog2.model.User;
@@ -119,6 +121,35 @@ public class BoardControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(delete("/board/" + id).session(mockSession));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("디버그 : " + responseBody);
+
+        /*
+         * jsonPath
+         * 최상위 : $
+         * 객체탐색 : .
+         * 배열 : [0]
+         */
+        // then
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    public void update_test() throws Exception {
+        // given
+        int id = 1;
+        BoardUpdateReqDto mockBoardUpdateReqDto = new BoardUpdateReqDto();
+        mockBoardUpdateReqDto.setTitle("제목입니다.");
+        mockBoardUpdateReqDto.setContent("내용입니다.");
+        String requestBody = om.writeValueAsString(mockBoardUpdateReqDto);
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                                                  put("/board/" + id)
+                                                  .content(requestBody)
+                                                  .contentType(MediaType.APPLICATION_JSON)
+                                                  .session(mockSession));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("디버그 : " + responseBody);
 
