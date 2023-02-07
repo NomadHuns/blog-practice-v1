@@ -1,15 +1,19 @@
 package shop.mtcoding.blog2.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
+import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.BoardService;
@@ -21,7 +25,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping({ "/", "/board/list", "/main" })
-    public String main() {
+    public String main(Model model) {
+        List<BoardListRespDto> boardList = boardService.getBoardList();
+        model.addAttribute("boardList", boardList);
         return "board/list";
     }
 
