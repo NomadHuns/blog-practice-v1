@@ -91,12 +91,12 @@ public class BoardController {
 
     @PutMapping("/board/{id}")
     public @ResponseBody ResponseEntity<?> update(@PathVariable("id") int id,
-            @RequestBody @Validated BoardUpdateReqDto boardUpdateReqDto) {
+            @RequestBody BoardUpdateReqDto boardUpdateReqDto) {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomApiException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
         }
-        boardService.update();
+        boardService.update(id, principal.getId(), boardUpdateReqDto);
         return new ResponseEntity<>(new ResponseDto<>(1, "수정 성공", null), HttpStatus.OK);
     }
 }

@@ -30,6 +30,6 @@
       delete from board_tb where id = #{id}
    </delete>   
    <update id="updateById">
-      update board_tb set title = #{title}, content = #{content}, user_id = #{userId} where id = #{id}
+      update board_tb set title = #{title}, content = #{content} where id = #{id}
    </update>
 </mapper>

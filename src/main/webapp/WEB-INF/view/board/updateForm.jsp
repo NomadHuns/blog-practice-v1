@@ -23,12 +23,14 @@
                 height: 400
             });
 
-            let post = {
-                title: $("#title").val(),
-                content: $("#content").val(),
-            }
+
 
             function update(id) {
+                
+                let post = {
+                    title: $("#title").val(),
+                    content: $("#content").val(),
+                }
                 $.ajax({
                     type: "put",
                     url: "/board/" + id,
@@ -39,9 +41,10 @@
                 })
                     .done((res) => {
                         alert(res.msg);
+                        location.href = "/board/" + id
                     })
                     .fail((err) => {
-                        alert(err.msg);
+                        alert(err.responseJSON.msg);
                     })
             }
         </script>
