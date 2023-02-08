@@ -1,5 +1,7 @@
 package shop.mtcoding.blog2.util;
 
+import java.io.IOException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +26,14 @@ public class HtmlParseTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void jsoup_test4() throws IOException {
+        Document doc = Jsoup.connect("https://kr.investing.com/equities/samsung-electronics-co-ltd").get();
+        Elements elements = doc.select("span.text-2xl");
+        String stockPrice = elements.text();
+        System.out.println(stockPrice);
     }
 
     @Test

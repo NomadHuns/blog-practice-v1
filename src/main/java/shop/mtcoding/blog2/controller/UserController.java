@@ -1,8 +1,11 @@
 package shop.mtcoding.blog2.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -12,6 +15,7 @@ import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.UserService;
+import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,17 +24,20 @@ public class UserController {
     private final HttpSession session;
 
     @GetMapping("/joinForm")
-    public String joinForm() {
+    public String joinForm(Model model) throws IOException {
+        JsoupUtil.stockMarket(model);
         return "user/joinForm";
     }
 
     @GetMapping("/loginForm")
-    public String loginForm() {
+    public String loginForm(Model model) throws IOException {
+        JsoupUtil.stockMarket(model);
         return "user/loginForm";
     }
 
     @GetMapping("/user/updateForm")
-    public String updateForm() {
+    public String updateForm(Model model) throws IOException {
+        JsoupUtil.stockMarket(model);
         return "user/updateForm";
     }
 

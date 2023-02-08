@@ -1,5 +1,6 @@
 package shop.mtcoding.blog2.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.BoardService;
+import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,41 +36,45 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping({ "/", "/board/list", "/main" })
-    public String main(Model model) {
+    public String main(Model model) throws IOException {
         List<BoardListRespDto> boardList = boardService.getBoardList();
         model.addAttribute("boardList", boardList);
+        JsoupUtil.stockMarket(model);
         return "board/list";
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable("id") int id, Model model) {
+    public String detail(@PathVariable("id") int id, Model model) throws IOException {
         BoardDetailRespDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
+        JsoupUtil.stockMarket(model);
         return "board/detail";
     }
 
     @GetMapping("/board/writeForm")
-    public String writeForm() {
+    public String writeForm(Model model) throws IOException {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
         }
+        JsoupUtil.stockMarket(model);
         return "board/writeForm";
     }
 
     @GetMapping("/board/{id}/updateForm")
-    public String updateForm(@PathVariable("id") int id, Model model) {
+    public String updateForm(@PathVariable("id") int id, Model model) throws IOException {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
         }
         BoardDetailRespDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
+        JsoupUtil.stockMarket(model);
         return "board/updateForm";
     }
 
     @PostMapping("/board")
-    public String save(BoardSaveReqDto boardSaveReqDto) {
+    public String save(BoardSaveReqDto boardSaveReqDto, Model model) throws IOException {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
@@ -87,7 +93,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/board/{id}")
-    public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") int id) {
+    public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") int id, Model model) throws IOException {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
@@ -98,7 +104,7 @@ public class BoardController {
 
     @PutMapping("/board/{id}")
     public @ResponseBody ResponseEntity<?> update(@PathVariable("id") int id,
-            @RequestBody BoardUpdateReqDto boardUpdateReqDto) {
+            @RequestBody BoardUpdateReqDto boardUpdateReqDto, Model model) throws IOException {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
