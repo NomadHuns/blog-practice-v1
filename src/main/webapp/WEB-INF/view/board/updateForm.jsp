@@ -38,10 +38,11 @@
                         'Content-type': 'application/json; charset=UTF-8',
                     },
                     data: JSON.stringify(post),
+                    dataType : "json" // default : 응답의 mime 타입으로 유추함
                 })
                     .done((res) => {
                         alert(res.msg);
-                        location.href = "/board/" + id
+                        location.href = "/board/" + id;
                     })
                     .fail((err) => {
                         alert(err.responseJSON.msg);

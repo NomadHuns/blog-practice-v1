@@ -67,11 +67,8 @@ public class BoardService {
             throw new CustomApiException("해당 게시글을 수정할 권한이 없습니다", HttpStatus.FORBIDDEN);
         }
         try {
-            int result = boardRepository.updateById(boardPS.getId(), boardUpdateReqDto.getTitle(),
+            boardRepository.updateById(boardPS.getId(), boardUpdateReqDto.getTitle(),
                     boardUpdateReqDto.getContent());
-            if (result != 1) {
-                throw new CustomApiException("서버에 일시적인 문제가 생겼습니다", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
         } catch (Exception e) {
             throw new CustomApiException("서버에 일시적인 문제가 생겼습니다", HttpStatus.INTERNAL_SERVER_ERROR);
             // 로그를 남겨야함 (DB or File)

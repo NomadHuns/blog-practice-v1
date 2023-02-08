@@ -148,19 +148,13 @@ public class BoardControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(
-                                                  put("/board/" + id)
-                                                  .content(requestBody)
-                                                  .contentType(MediaType.APPLICATION_JSON)
-                                                  .session(mockSession));
+                put("/board/" + id)
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .session(mockSession));
         String responseBody = resultActions.andReturn().getResponse().getContentAsString();
         System.out.println("디버그 : " + responseBody);
 
-        /*
-         * jsonPath
-         * 최상위 : $
-         * 객체탐색 : .
-         * 배열 : [0]
-         */
         // then
         resultActions.andExpect(jsonPath("$.code").value(1));
         resultActions.andExpect(status().isOk());
