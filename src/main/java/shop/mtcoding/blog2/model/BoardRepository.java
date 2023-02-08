@@ -15,9 +15,9 @@ public interface BoardRepository {
         public Board findById(int id);
 
         public int insert(@Param("title") String title, @Param("content") String content,
-                        @Param("userId") int userId);
+                        @Param("thumbnail") String thumbnail, @Param("userId") int userId);
 
-        public int updateById(@Param("id") int id, @Param("title") String title,
+        public int updateById(@Param("id") int id, @Param("title") String title, @Param("thumbnail") String thumbnail,
                         @Param("content") String content);
 
         public int deleteById(int id);

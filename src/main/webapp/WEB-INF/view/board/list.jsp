@@ -5,7 +5,7 @@
             <c:forEach items="${boardList}" var="board">
                 <div class="col-lg-3 py-2">
                     <div class="card col-lg-12">
-                        <img class="card-img-top" style="height: 250px;" src="images/profile.jfif" alt="Card image">
+                        <img class="card-img-top" style="height: 250px;" src="${board.thumbnail}" alt="Card image">
                         <div class="card-body">
                             <div class="my-text-ellipsis">작성자 : ${board.username}</div>
                             <h4 class="card-title my-text-ellipsis">${board.title}</h4>

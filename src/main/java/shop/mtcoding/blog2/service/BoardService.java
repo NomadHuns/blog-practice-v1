@@ -2,6 +2,10 @@ package shop.mtcoding.blog2.service;
 
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +28,18 @@ public class BoardService {
 
     @Transactional
     public void save(BoardSaveReqDto boardSaveReqDto, int userId) {
-        int result = boardRepository.insert(boardSaveReqDto.getTitle(), boardSaveReqDto.getContent(), userId);
+        String thumbnail = "";
+        Document doc = Jsoup.parse(boardSaveReqDto.getContent());
+        Elements elements = doc.select("img");
+        Element element = elements.first();
+        if (element != null) {
+            thumbnail = element.attr("src");
+        } else {
+            thumbnail = "/images/dora.png";
+        }
+
+        int result = boardRepository.insert(boardSaveReqDto.getTitle(), boardSaveReqDto.getContent(),
+                thumbnail, userId);
         if (result != 1) {
             throw new CustomException("글쓰기 중 문제가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -59,6 +74,16 @@ public class BoardService {
 
     @Transactional
     public void update(int id, int userId, BoardUpdateReqDto boardUpdateReqDto) {
+        String thumbnail = "";
+        Document doc = Jsoup.parse(boardUpdateReqDto.getContent());
+        Elements elements = doc.select("img");
+        Element element = elements.first();
+        if (element != null) {
+            thumbnail = element.attr("src");
+        } else {
+            thumbnail = "/images/dora.png";
+        }
+
         Board boardPS = boardRepository.findById(id);
         if (boardPS == null) {
             throw new CustomApiException("존재하지 않는 게시물입니다");
@@ -68,6 +93,7 @@ public class BoardService {
         }
         try {
             boardRepository.updateById(boardPS.getId(), boardUpdateReqDto.getTitle(),
+                    thumbnail,
                     boardUpdateReqDto.getContent());
         } catch (Exception e) {
             throw new CustomApiException("서버에 일시적인 문제가 생겼습니다", HttpStatus.INTERNAL_SERVER_ERROR);
