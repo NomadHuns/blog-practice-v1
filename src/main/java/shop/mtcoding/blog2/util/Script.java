@@ -10,4 +10,13 @@ public class Script {
         sb.append("</script>");
         return sb.toString();
     }
+
+    public static String herf(String msg, String location) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<script>");
+        sb.append("alert('" + msg + "');");
+        sb.append("location.href =\" " + location + "\" ;");
+        sb.append("</script>");
+        return sb.toString();
+    }
 }

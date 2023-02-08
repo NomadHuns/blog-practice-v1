@@ -49,11 +49,19 @@ public class BoardController {
 
     @GetMapping("/board/writeForm")
     public String writeForm() {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
+        }
         return "board/writeForm";
     }
 
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable("id") int id, Model model) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
+        }
         BoardDetailRespDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
         return "board/updateForm";
@@ -63,7 +71,7 @@ public class BoardController {
     public String save(BoardSaveReqDto boardSaveReqDto) {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
-            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
+            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
         }
         if (boardSaveReqDto.getTitle().isEmpty() || boardSaveReqDto.getTitle() == null) {
             throw new CustomException("제목을 입력해주세요.");
@@ -82,7 +90,7 @@ public class BoardController {
     public @ResponseBody ResponseEntity<?> delete(@PathVariable("id") int id) {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
-            throw new CustomApiException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
+            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
         }
         boardService.delete(id, principal.getId());
         return new ResponseEntity<>(new ResponseDto<>(1, "삭제 성공", null), HttpStatus.OK);
@@ -91,15 +99,15 @@ public class BoardController {
     @PutMapping("/board/{id}")
     public @ResponseBody ResponseEntity<?> update(@PathVariable("id") int id,
             @RequestBody BoardUpdateReqDto boardUpdateReqDto) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
+        }
         if (boardUpdateReqDto.getTitle().isEmpty() || boardUpdateReqDto.getTitle() == null) {
             throw new CustomApiException("제목을 입력하세요");
         }
         if (boardUpdateReqDto.getContent().isEmpty() || boardUpdateReqDto.getContent() == null) {
             throw new CustomApiException("내용을 입력하세요");
-        }
-        User principal = (User) session.getAttribute("principal");
-        if (principal == null) {
-            throw new CustomApiException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED);
         }
         boardService.update(id, principal.getId(), boardUpdateReqDto);
         return new ResponseEntity<>(new ResponseDto<>(1, "수정 성공", null), HttpStatus.OK);

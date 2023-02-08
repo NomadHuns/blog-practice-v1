@@ -14,7 +14,10 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> customException(CustomException e) {
-        return new ResponseEntity<>(Script.back(e.getMessage()), e.getStatus());
+        if (e.getLocation() == null) {
+            return new ResponseEntity<>(Script.back(e.getMessage()), e.getStatus());
+        }
+        return new ResponseEntity<>(Script.herf(e.getMessage(), e.getLocation()), e.getStatus());
     }
 
     @ExceptionHandler(CustomApiException.class)
