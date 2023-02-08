@@ -2,10 +2,6 @@ package shop.mtcoding.blog2.service;
 
 import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +15,7 @@ import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.BoardRepository;
+import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Transactional(readOnly = true)
 @Service
@@ -28,15 +25,7 @@ public class BoardService {
 
     @Transactional
     public void save(BoardSaveReqDto boardSaveReqDto, int userId) {
-        String thumbnail = "";
-        Document doc = Jsoup.parse(boardSaveReqDto.getContent());
-        Elements elements = doc.select("img");
-        Element element = elements.first();
-        if (element != null) {
-            thumbnail = element.attr("src");
-        } else {
-            thumbnail = "/images/dora.png";
-        }
+        String thumbnail = JsoupUtil.thumbnail(boardSaveReqDto.getContent(), "img", "src", "/images/dora.png");
 
         int result = boardRepository.insert(boardSaveReqDto.getTitle(), boardSaveReqDto.getContent(),
                 thumbnail, userId);
@@ -74,15 +63,7 @@ public class BoardService {
 
     @Transactional
     public void update(int id, int userId, BoardUpdateReqDto boardUpdateReqDto) {
-        String thumbnail = "";
-        Document doc = Jsoup.parse(boardUpdateReqDto.getContent());
-        Elements elements = doc.select("img");
-        Element element = elements.first();
-        if (element != null) {
-            thumbnail = element.attr("src");
-        } else {
-            thumbnail = "/images/dora.png";
-        }
+        String thumbnail = JsoupUtil.thumbnail(boardUpdateReqDto.getContent(), "img", "src", "/images/dora.png");
 
         Board boardPS = boardRepository.findById(id);
         if (boardPS == null) {
