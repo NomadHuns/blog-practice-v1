@@ -3,7 +3,7 @@ create table user_tb(
     username varchar not null unique,
     password varchar not null,
     email varchar not null,
-    created_at timestamp
+    created_at timestamp not null
 );
 
 create table board_tb(
@@ -12,5 +12,13 @@ create table board_tb(
     content longtext not null,
     user_id int not null,
     thumbnail longtext not null,
-    created_at timestamp
+    created_at timestamp not null
+);
+
+create table reply_tb(
+    id int auto_increment primary key,
+    comment varchar(100) not null,
+    user_id int not null,
+    board_id int not null,
+    created_at timestamp not null
 );

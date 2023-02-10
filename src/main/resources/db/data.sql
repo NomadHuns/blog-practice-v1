@@ -12,4 +12,9 @@ insert into board_tb(title, content, thumbnail, user_id, created_at) values('여
 insert into board_tb(title, content, thumbnail, user_id, created_at) values('아홉번째 글입니다.', '아홉번째 내용입니다', '/images/dora.png', 2, now());
 insert into board_tb(title, content, thumbnail, user_id, created_at) values('열번째 글입니다.', '열번째 내용입니다', '/images/dora.png', 2, now());
 
+insert into reply_tb(comment, user_id, board_id, created_at) values('1번째 댓글입니다.', 1, 1, now());
+insert into reply_tb(comment, user_id, board_id, created_at) values('2번째 댓글입니다.', 1, 2, now());
+insert into reply_tb(comment, user_id, board_id, created_at) values('3번째 댓글입니다.', 2, 1, now());
+insert into reply_tb(comment, user_id, board_id, created_at) values('4번째 댓글입니다.', 2, 2, now());
+
 commit; 
