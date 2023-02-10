@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import shop.mtcoding.blog2.dto.reply.ReplyReq.ReplySaveReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 
@@ -30,12 +29,5 @@ public class ReplyController {
             throw new CustomException("댓글 내용을 입력하세요");
         }
         return "redirect:/" + replySaveReqDto.getBoardId();
-    }
-
-    @Getter
-    @Setter
-    private static class ReplySaveReqDto {
-        private String comment;
-        private Integer boardId;
     }
 }
