@@ -1,11 +1,14 @@
 package shop.mtcoding.blog2.service;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.reply.ReplyReq.ReplySaveReqDto;
+import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailRespDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.ReplyRepository;
 
@@ -24,4 +27,8 @@ public class ReplyService {
         }
     }
 
+    public List<ReplyDetailRespDto> getReplyList(int Boardid) {
+        List<ReplyDetailRespDto> replyDto = replyRepository.findByBoardIdWithUser(Boardid);
+        return replyDto;
+    }
 }

@@ -41,6 +41,9 @@ public class BoardService {
 
     public BoardDetailRespDto getBoard(int id) {
         BoardDetailRespDto dto = boardRepository.findByIdWithUser(id);
+        if (dto == null) {
+            throw new CustomException("존재하지 않는 게시물입니다");
+        }
         return dto;
     }
 

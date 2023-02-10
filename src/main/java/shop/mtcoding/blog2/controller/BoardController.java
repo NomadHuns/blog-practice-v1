@@ -23,10 +23,12 @@ import shop.mtcoding.blog2.dto.board.BoardReq.BoardSaveReqDto;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardUpdateReqDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
+import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailRespDto;
 import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.BoardService;
+import shop.mtcoding.blog2.service.ReplyService;
 import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Controller
@@ -34,6 +36,7 @@ import shop.mtcoding.blog2.util.JsoupUtil;
 public class BoardController {
     private final HttpSession session;
     private final BoardService boardService;
+    private final ReplyService replyService;
 
     @GetMapping({ "/", "/board/list", "/main" })
     public String main(Model model) throws IOException {
@@ -46,7 +49,9 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String detail(@PathVariable("id") int id, Model model) throws IOException {
         BoardDetailRespDto board = boardService.getBoard(id);
+        List<ReplyDetailRespDto> replyList = replyService.getReplyList(board.getId());
         model.addAttribute("board", board);
+        model.addAttribute("replyList", replyList);
         JsoupUtil.stockMarket(model);
         return "board/detail";
     }

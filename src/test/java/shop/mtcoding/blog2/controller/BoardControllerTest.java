@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import shop.mtcoding.blog2.dto.board.BoardReq.BoardUpdateReqDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardDetailRespDto;
 import shop.mtcoding.blog2.dto.board.BoardResp.BoardListRespDto;
+import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailRespDto;
 import shop.mtcoding.blog2.model.User;
 
 @Transactional // 메서드 실행 직후 롤백, auto_increment 초기화 되지 않음.
@@ -104,8 +105,11 @@ public class BoardControllerTest {
         ResultActions resultActions = mvc.perform(get("/board/1"));
         Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
         BoardDetailRespDto dto = (BoardDetailRespDto) map.get("board");
-        String model = om.writeValueAsString(dto);
-        System.out.println("디버그 : " + model);
+        List<ReplyDetailRespDto> replyList = (List<ReplyDetailRespDto>) map.get("replyList");
+        String boardmodel = om.writeValueAsString(dto);
+        String replymodel = om.writeValueAsString(replyList);
+        System.out.println("디버그 : " + boardmodel);
+        System.out.println("디버그 : " + replymodel);
 
         // then
         resultActions.andExpect(status().isOk());
@@ -114,6 +118,7 @@ public class BoardControllerTest {
         assertThat(dto.getContent()).isEqualTo("첫번째 내용입니다");
         assertThat(dto.getId()).isEqualTo(1);
         assertThat(dto.getUserId()).isEqualTo(1);
+        assertThat(replyList.get(0).getId()).isEqualTo(1);
     }
 
     @Test
