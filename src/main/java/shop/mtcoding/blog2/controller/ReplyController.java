@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.reply.ReplyReq.ReplySaveReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
+import shop.mtcoding.blog2.service.ReplyService;
 
 @Controller
 @RequiredArgsConstructor
 public class ReplyController {
     private final HttpSession session;
+    private final ReplyService replyService;
 
     @PostMapping("/reply")
     public String save(ReplySaveReqDto replySaveReqDto) {
@@ -25,9 +27,7 @@ public class ReplyController {
         if (replySaveReqDto.getComment().isEmpty() || replySaveReqDto.getComment() == null) {
             throw new CustomException("댓글 내용을 입력하세요");
         }
-        if (replySaveReqDto.getBoardId() == null) {
-            throw new CustomException("댓글 내용을 입력하세요");
-        }
-        return "redirect:/" + replySaveReqDto.getBoardId();
+        replyService.save(replySaveReqDto, principal.getId());
+        return "redirect:/board/" + replySaveReqDto.getBoardId();
     }
 }
