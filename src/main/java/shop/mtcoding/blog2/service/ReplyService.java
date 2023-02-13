@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.mtcoding.blog2.dto.reply.ReplyReq.ReplySaveReqDto;
 import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailRespDto;
+import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.BoardRepository;
+import shop.mtcoding.blog2.model.Reply;
 import shop.mtcoding.blog2.model.ReplyRepository;
 
+@Slf4j
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
@@ -36,5 +40,22 @@ public class ReplyService {
     public List<ReplyDetailRespDto> getReplyList(int Boardid) {
         List<ReplyDetailRespDto> replyDto = replyRepository.findByBoardIdWithUser(Boardid);
         return replyDto;
+    }
+
+    @Transactional
+    public void delete(int replyId, Integer principalId) {
+        Reply replyPS = replyRepository.findById(replyId);
+        if (replyPS == null) {
+            throw new CustomApiException("댓글이 존재하지 않습니다");
+        }
+        if (replyPS.getUserId() != principalId) {
+            throw new CustomApiException("댓글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
+        }
+        try {
+            replyRepository.deleteById(replyId);
+        } catch (Exception e) {
+            log.error("서버에러 : " + e.getMessage()); 
+            throw new CustomApiException("댓글쓰기 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

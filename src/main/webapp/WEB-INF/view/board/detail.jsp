@@ -41,7 +41,16 @@
                             <div>${reply.comment}</div>
                             <div class="d-flex">
                                 <div class="font-italic">작성자 : ${reply.username} &nbsp;</div>
-                                <button onClick="deleteByReplyId(${reply.id})" class="badge bg-danger">삭제</button>
+                                <c:choose>
+                                    <c:when test="${principal.id==reply.userId}">
+                                        <button onClick="deleteByReplyId(${reply.id})"
+                                            class="badge bg-danger">삭제</button>
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        <button style="visibility: hidden;">삭제</button>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </li>
                     </c:forEach>
@@ -59,6 +68,21 @@
                     .done((res) => { // 20X일 때
                         alert(res.msg);
                         location.href = "/";
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    })
+            }
+
+            function deleteByReplyId(replyId) {
+                $.ajax({
+                    type: "delete",
+                    url: "/reply/" + replyId,
+                    dataType: "json",
+                })
+                    .done((res) => { // 20X일 때
+                        alert(res.msg);
+                        $("#reply-" + replyId).remove();
                     })
                     .fail((err) => { // 40X, 50X일 때
                         alert(err.responseJSON.msg);
