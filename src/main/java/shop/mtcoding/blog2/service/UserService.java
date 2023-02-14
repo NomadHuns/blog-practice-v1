@@ -1,5 +1,7 @@
 package shop.mtcoding.blog2.service;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,4 +37,11 @@ public class UserService {
         }
         return principal;
     }
+
+    @Transactional(readOnly = true)
+    public User findById(int principalId) {
+        User principal = userRepository.findById(principalId);
+        return principal;
+    }
+
 }

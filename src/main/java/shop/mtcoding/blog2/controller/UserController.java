@@ -1,13 +1,19 @@
 package shop.mtcoding.blog2.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.user.UserReq.JoinReqDto;
@@ -73,5 +79,16 @@ public class UserController {
     public String logout() {
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/user/profileUpdateForm")
+    public String profileUpdateForm(Model model) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            return "redirect:/loginForm";
+        }
+        User userPS = userService.findById(principal.getId());
+        model.addAttribute("user", userPS);
+        return "user/profileUpdateForm";
     }
 }
