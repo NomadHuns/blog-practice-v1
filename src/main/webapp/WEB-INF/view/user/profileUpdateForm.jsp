@@ -44,9 +44,19 @@
         <div class="container my-3">
             <h2 class="text-center">프로필 사진 변경 페이지</h2>
             <form action="/user/profileUpdate" method="post" enctype="multipart/form-data">
+            <c:choose>
+               <c:when test="${user.profile == null}">
                 <div class="form-group">
                     <img id="imagePreview" src="/images/dora.png" alt="Current Photo" class="img-fluid">
                 </div>
+               </c:when>
+            
+               <c:otherwise>
+                <div class="form-group">
+                    <img id="imagePreview" src="${user.profile}" alt="Current Photo" class="img-fluid">
+                </div>
+               </c:otherwise>
+            </c:choose>
                 <div class="form-group">
                     <input type="file" class="form-control" id="photo" name="profile" onchange="chooseImage(this)">
                 </div>

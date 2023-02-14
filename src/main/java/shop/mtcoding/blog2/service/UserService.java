@@ -1,7 +1,6 @@
 package shop.mtcoding.blog2.service;
 
-import java.security.Principal;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,4 +43,14 @@ public class UserService {
         return principal;
     }
 
+    @Transactional
+    public void updateProfile(int principalId, String imagePath) {
+        User principal = userRepository.findById(principalId);
+        try {
+            userRepository.updateById(principalId, principal.getUsername(), principal.getPassword(),
+                    principal.getEmail(), imagePath);
+        } catch (Exception e) {
+            throw new CustomException("프로필 변경 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

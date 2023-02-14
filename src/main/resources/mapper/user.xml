@@ -17,7 +17,7 @@
       delete from user_tb where id = #{id}
    </delete>   
    <update id="updateById">
-      update user_tb set username = #{username}, password = #{password}, email = #{email} where id = #{id}
+      update user_tb set username = #{username}, password = #{password}, email = #{email}, profile = #{profile} where id = #{id}
    </update>
    <select id="findByUsernameAndPassword" resultType="shop.mtcoding.blog2.model.User">
       select * from user_tb where username = #{username} and password = #{password}
