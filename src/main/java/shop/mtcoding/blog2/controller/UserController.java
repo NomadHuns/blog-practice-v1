@@ -89,7 +89,6 @@ public class UserController {
 
     @PostMapping("/user/profileUpdate")
     public String profileUpdate(MultipartFile profile) throws IOException {
-        System.out.println("테스트 : " + profile.getContentType());
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             return "redirect:/loginForm";
@@ -98,7 +97,10 @@ public class UserController {
             throw new CustomException("사진이 전송되지 않았습니다");
         }
 
-        // 사진이 아니면 ex 터트리기
+        // 사진이 아니면 예외 처리하기
+        if (!profile.getContentType().startsWith("image")) {
+            throw new CustomException("사진 파일만 업로드 가능합니다");
+        }
 
         // 2. 저장된 파일의 경로를 DB에 저장
         User userPS = userService.updateProfile(principal.getId(), profile);

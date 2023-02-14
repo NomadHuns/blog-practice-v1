@@ -49,7 +49,7 @@
                         alt="Current Photo" class="img-fluid">
                 </div>
                 <div class="form-group">
-                    <input type="file" class="form-control" id="photo" name="profile" onchange="chooseImage(this)">
+                    <input type="file" class="form-control" id="profile" name="profile" onchange="chooseImage(this)">
                 </div>
                 <button type="submit" class="btn btn-primary">사진변경</button>
             </form>
@@ -59,8 +59,9 @@
 
             function chooseImage(obj) {
                 let f = obj.files[0];
-                if (f.type.match("image.*")) {
-                    alter("이미지를 등록해야 합니다");
+                if (!f.type.match("image.*")) {
+                    alert("이미지를 등록해야 합니다");
+                    $("#profile").val("");
                     return;
                 }
                 let reader = new FileReader;
