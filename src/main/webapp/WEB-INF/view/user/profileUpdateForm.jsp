@@ -43,20 +43,11 @@
 
         <div class="container my-3">
             <h2 class="text-center">프로필 사진 변경 페이지</h2>
-            <form action="/user/profileUpdate" method="post" enctype="multipart/form-data">
-            <c:choose>
-               <c:when test="${user.profile == null}">
+            <form id="profileForm" action="/user/profileUpdate" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <img id="imagePreview" src="/images/dora.png" alt="Current Photo" class="img-fluid">
+                    <img id="imagePreview" src="${user.profile == null ? '/images/profile.jfif' : user.profile}"
+                        alt="Current Photo" class="img-fluid">
                 </div>
-               </c:when>
-            
-               <c:otherwise>
-                <div class="form-group">
-                    <img id="imagePreview" src="${user.profile}" alt="Current Photo" class="img-fluid">
-                </div>
-               </c:otherwise>
-            </c:choose>
                 <div class="form-group">
                     <input type="file" class="form-control" id="photo" name="profile" onchange="chooseImage(this)">
                 </div>
@@ -65,18 +56,17 @@
         </div>
 
         <script>
-            function chooseImage(obj) {
-                // console.log(obj);
-                // console.log(obj.files);
-                let f = obj.files[0];
-                // console.log(f);
 
+            function chooseImage(obj) {
+                let f = obj.files[0];
+                if (f.type.match("image.*")) {
+                    alter("이미지를 등록해야 합니다");
+                    return;
+                }
                 let reader = new FileReader;
                 reader.readAsDataURL(f);
 
-                // 콜스택이 다 비워지고, 이벤트 루프로 가서 readAsDataURL 이벤트가 끝나면 콜백시켜주는 함수
                 reader.onload = function (e) {
-                    // console.log(e.target.result);
                     $("#imagePreview").attr("src", e.target.result);
                 }
             }

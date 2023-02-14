@@ -1,9 +1,6 @@
 package shop.mtcoding.blog2.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.servlet.http.HttpSession;
 
@@ -92,10 +89,7 @@ public class UserController {
 
     @PostMapping("/user/profileUpdate")
     public String profileUpdate(MultipartFile profile) throws IOException {
-        // System.out.println("테스트 : " + profile.getContentType());
-        // System.out.println("테스트 : " + profile.getName());
-        // System.out.println("테스트 : " + profile.getSize());
-        // System.out.println("테스트 : " + profile.getOriginalFilename());
+        System.out.println("테스트 : " + profile.getContentType());
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
             return "redirect:/loginForm";
@@ -104,22 +98,12 @@ public class UserController {
             throw new CustomException("사진이 전송되지 않았습니다");
         }
 
-        // 1. 파일은 하드디스크에 저장
-        // Path imageFilePath = Paths.get("classpath:/images"); // 실행 되지 않음
+        // 사진이 아니면 ex 터트리기
 
-        String savePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\";
-        Path imageFilePath = Paths.get(savePath + profile.getOriginalFilename());
-        // System.out.println("테스트 : " + System.getProperty("user.dir"));
-        try {
-            Files.write(imageFilePath, profile.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         // 2. 저장된 파일의 경로를 DB에 저장
-        userService.updateProfile(principal.getId(), "/images/" + profile.getOriginalFilename());
+        User userPS = userService.updateProfile(principal.getId(), profile);
 
         // 3. 수정된 데이터를 세션에 저장
-        User userPS = userService.findById(principal.getId());
         session.setAttribute("principal", userPS);
         return "redirect:/";
     }

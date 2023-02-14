@@ -3,6 +3,7 @@ package shop.mtcoding.blog2.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.user.UserReq.JoinReqDto;
@@ -10,6 +11,7 @@ import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.model.UserRepository;
+import shop.mtcoding.blog2.util.PathUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -44,13 +46,18 @@ public class UserService {
     }
 
     @Transactional
-    public void updateProfile(int principalId, String imagePath) {
-        User principal = userRepository.findById(principalId);
+    public User updateProfile(int principalId, MultipartFile profile) {
+        // 1. 파일은 하드디스크에 저장
+        // 이미지 경로 : /static/images
+        String uuidImageName = PathUtil.writeImageFile(profile);
+        // 2. 저장된 파일의 경로를 DB에 저장
+        User userPS = userRepository.findById(principalId);
         try {
-            userRepository.updateById(principalId, principal.getUsername(), principal.getPassword(),
-                    principal.getEmail(), imagePath);
+            userRepository.updateById(userPS.getId(), userPS.getUsername(), userPS.getPassword(),
+                    userPS.getEmail(), uuidImageName, userPS.getCreatedAt());
         } catch (Exception e) {
             throw new CustomException("프로필 변경 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return userPS;
     }
 }

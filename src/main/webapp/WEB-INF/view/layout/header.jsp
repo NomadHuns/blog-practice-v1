@@ -52,21 +52,11 @@
                             </c:choose>
 
                         </ul>
-                        <c:choose>
-                            <c:when test="${principal.profile == null}">
-                                <div>
-                                    <a href="/user/profileUpdateForm"><img src="/images/profile.jfif"
-                                            style="width: 35px;" class="rounded-circle" alt="Cinque Terre"></a>
-                                </div>
-                            </c:when>
-
-                            <c:otherwise>
-                                <div>
-                                    <a href="/user/profileUpdateForm"><img src="${principal.profile}"
-                                            style="width: 35px;" class="rounded-circle" alt="Cinque Terre"></a>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
+                        <div>
+                            <a href="/user/profileUpdateForm"><img
+                                    src="${principal.profile == null ? '/images/profile.jfif' : principal.profile}"
+                                    style="width: 35px;" class="rounded-circle" alt="Cinque Terre"></a>
+                        </div>
                     </div>
 
                 </div>
