@@ -114,6 +114,28 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void searchBoard_test() throws Exception {
+        // given
+        String searchString = "열";
+
+        // when
+        ResultActions resultActions = mvc
+                .perform(get("/admin/board?searchString=" + searchString).session(mockSession));
+        Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
+        System.out.println("테스트 : " + map.size());
+        List<Board> dtos = (List<Board>) map.get("boardList");
+        System.out.println("테스트 : " + dtos.size());
+        om = new ObjectMapper();
+        String model = om.writeValueAsString(dtos);
+        System.out.println("테스트 : " + model);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        // assertThat(dtos.size()).isEqualTo(10);
+        // assertThat(dtos.get(0).getTitle()).isEqualTo("첫번째 글입니다.");
+    }
+
+    @Test
     public void reply_test() throws Exception {
         // given
 

@@ -34,6 +34,14 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                <div style="width: 50%;">
+                    <form action="/admin/board" method="get" class="d-flex">
+                        <input name="searchString" class="form-control me-2" type="text" placeholder="검색">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <script>

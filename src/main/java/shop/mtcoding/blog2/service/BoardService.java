@@ -46,6 +46,11 @@ public class BoardService {
         return boardPSList;
     }
 
+    public List<Board> searchBoardList(String searchString) {
+        List<Board> boardPSList = boardRepository.findByTitleOrContent(searchString);
+        return boardPSList;
+    }
+
     public BoardDetailRespDto getBoard(int id) {
         BoardDetailRespDto dto = boardRepository.findByIdWithUser(id);
         if (dto == null) {

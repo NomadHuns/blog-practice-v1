@@ -32,4 +32,7 @@
    <update id="updateById">
       update board_tb set title = #{title}, content = #{content}, thumbnail = #{thumbnail} where id = #{id}
    </update>
+   <select id="findByTitleOrContent" resultType="shop.mtcoding.blog2.model.Board">
+      select * from board_tb where title like CONCAT('%',#{searchString},'%') or content like CONCAT('%',#{searchString},'%')
+   </select>
 </mapper>

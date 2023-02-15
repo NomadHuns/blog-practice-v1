@@ -60,6 +60,13 @@ public class AdminController {
         return "admin/board";
     }
 
+    @GetMapping("/admin/board?searchString={searchString}")
+    public String searchBoard(@PathVariable("searchString") String searchString, Model model) {
+        List<Board> boardPSList = boardService.searchBoardList(searchString);
+        model.addAttribute("boardList", boardPSList);
+        return "admin/board";
+    }
+
     @GetMapping("/admin/reply")
     public String reply(Model model) {
         User principal = (User) session.getAttribute("principal");
