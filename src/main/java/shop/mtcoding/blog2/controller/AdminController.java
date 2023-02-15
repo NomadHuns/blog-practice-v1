@@ -5,12 +5,17 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
+import shop.mtcoding.blog2.dto.ResponseDto;
 import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailAdminRespDto;
 import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
@@ -86,5 +91,44 @@ public class AdminController {
         User principal = userService.login(loginReqDto);
         session.setAttribute("principal", principal);
         return "redirect:/admin";
+    }
+
+    @DeleteMapping("/admin/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
+        }
+        if (!principal.getRole().equals("admin")) {
+            throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
+        }
+        userService.delete(id, principal.getId());
+        return new ResponseEntity<>(new ResponseDto<>(1, "유저 삭제 성공", null), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/board/{id}")
+    public ResponseEntity<?> deleteBoard(@PathVariable("id") int id) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
+        }
+        if (!principal.getRole().equals("admin")) {
+            throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
+        }
+        boardService.delete(id, principal.getId());
+        return new ResponseEntity<>(new ResponseDto<>(1, "게시물 삭제 성공", null), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/reply/{id}")
+    public ResponseEntity<?> deleteReply(@PathVariable("id") int id) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
+        }
+        if (!principal.getRole().equals("admin")) {
+            throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
+        }
+        replyService.delete(id, principal.getId());
+        return new ResponseEntity<>(new ResponseDto<>(1, "댓글 삭제 성공", null), HttpStatus.OK);
     }
 }
