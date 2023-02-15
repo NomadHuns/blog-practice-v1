@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +25,10 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailAdminRespDto;
+import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.User;
 
 /*
@@ -40,6 +46,7 @@ public class AdminControllerTest {
     private MockMvc mvc;
 
     private MockHttpSession mockSession;
+    private ObjectMapper om;
 
     @BeforeEach
     public void setUp() {
@@ -57,17 +64,16 @@ public class AdminControllerTest {
     @Test
     public void login_test() throws Exception {
         // given
-        String requestBody = "username=ssar&password=1234";
+        String requestBody = "username=alss&password=1234";
 
         // when
         ResultActions resultActions = mvc.perform(post("/admin/login").content(requestBody)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
         HttpSession session = resultActions.andReturn().getRequest().getSession();
         User principal = (User) session.getAttribute("principal");
-        // System.out.println("디버그 : " + principal.getUsername());
 
         // then
-        assertThat(principal.getUsername()).isEqualTo("ssar");
+        assertThat(principal.getUsername()).isEqualTo("alss");
         resultActions.andExpect(status().is3xxRedirection());
     }
 
@@ -77,9 +83,52 @@ public class AdminControllerTest {
 
         // when
         ResultActions resultActions = mvc.perform(get("/admin").session(mockSession));
+        Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
+        List<User> dtos = (List<User>) map.get("userList");
+        om = new ObjectMapper();
+        String model = om.writeValueAsString(dtos);
+        System.out.println("테스트 : " + model);
 
         // then
         resultActions.andExpect(status().isOk());
+        assertThat(dtos.size()).isEqualTo(2);
+        assertThat(dtos.get(0).getUsername()).isEqualTo("ssar");
+    }
+
+    @Test
+    public void board_test() throws Exception {
+        // given
+
+        // when
+        ResultActions resultActions = mvc.perform(get("/admin/board").session(mockSession));
+        Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
+        List<Board> dtos = (List<Board>) map.get("boardList");
+        om = new ObjectMapper();
+        String model = om.writeValueAsString(dtos);
+        System.out.println("테스트 : " + model);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        assertThat(dtos.size()).isEqualTo(10);
+        assertThat(dtos.get(0).getTitle()).isEqualTo("첫번째 글입니다.");
+    }
+
+    @Test
+    public void reply_test() throws Exception {
+        // given
+
+        // when
+        ResultActions resultActions = mvc.perform(get("/admin/reply").session(mockSession));
+        Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
+        List<ReplyDetailAdminRespDto> dtos = (List<ReplyDetailAdminRespDto>) map.get("replyList");
+        om = new ObjectMapper();
+        String model = om.writeValueAsString(dtos);
+        System.out.println("테스트 : " + model);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        assertThat(dtos.size()).isEqualTo(4);
+        assertThat(dtos.get(0).getComment()).isEqualTo("1번째 댓글입니다.");
     }
 
     @Test
