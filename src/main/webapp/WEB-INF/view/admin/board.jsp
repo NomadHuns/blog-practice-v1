@@ -36,9 +36,9 @@
             </table>
             <div class="d-flex justify-content-center">
                 <div style="width: 50%;">
-                    <form action="/admin/board" method="get" class="d-flex">
+                    <form class="d-flex">
                         <input name="searchString" class="form-control me-2" type="text" placeholder="검색">
-                        <button class="btn btn-primary" type="submit">Search</button>
+                        <button class="btn btn-primary" type="button">Search</button>
                     </form>
                 </div>
             </div>

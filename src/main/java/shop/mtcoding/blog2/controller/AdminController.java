@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.ResponseDto;
 import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailAdminRespDto;
 import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
+import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.User;
@@ -47,17 +48,16 @@ public class AdminController {
     }
 
     @GetMapping("/admin/board")
-    public String board(Model model) {
+    public ResponseEntity<?> board(Model model) {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
-            throw new CustomException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
+            throw new CustomApiException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
         }
         if (!principal.getRole().equals("admin")) {
-            throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
+            throw new CustomApiException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
         }
         List<Board> boardPSList = boardService.getBoardListAdmin();
-        model.addAttribute("boardList", boardPSList);
-        return "admin/board";
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", boardPSList), HttpStatus.OK);
     }
 
     @GetMapping("/admin/board?searchString={searchString}")
