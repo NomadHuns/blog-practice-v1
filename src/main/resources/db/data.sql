@@ -1,5 +1,6 @@
-insert into user_tb(username, password, email, created_at) values('ssar', '1234', 'ssar@nate.com', now());
-insert into user_tb(username, password, email, created_at) values('cos', '1234', 'cos@nate.com', now());
+insert into user_tb(role, username, password, email, created_at) values('user', 'ssar', '1234', 'ssar@nate.com', now());
+insert into user_tb(role, username, password, email, created_at) values('user', 'cos', '1234', 'cos@nate.com', now());
+insert into user_tb(role, username, password, email, created_at) values('admin', 'alss', '1234', 'alss@nate.com', now());
 
 insert into board_tb(title, content, thumbnail, user_id, created_at) values('첫번째 글입니다.', '첫번째 내용입니다','/images/dora.png', 1, now());
 insert into board_tb(title, content, thumbnail, user_id, created_at) values('두번째 글입니다.', '두번째 내용입니다','/images/dora.png', 1, now());

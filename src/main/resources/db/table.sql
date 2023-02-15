@@ -1,5 +1,6 @@
 create table user_tb(
     id int auto_increment primary key,
+    role varchar not null,
     username varchar not null unique,
     password varchar not null,
     email varchar not null,
