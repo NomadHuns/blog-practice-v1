@@ -39,6 +39,11 @@ public class BoardService {
         return boardList;
     }
 
+    public List<Board> getBoardListAdmin() {
+        List<Board> boardPSList = boardRepository.findAll();
+        return boardPSList;
+    }
+
     public BoardDetailRespDto getBoard(int id) {
         BoardDetailRespDto dto = boardRepository.findByIdWithUser(id);
         if (dto == null) {

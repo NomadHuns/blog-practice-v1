@@ -23,27 +23,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">1</td>
-                        <td class="my-text-ellipsis">Doe</td>
-                        <td class="my-text-ellipsis">댓글1</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">2</td>
-                        <td class="my-text-ellipsis">Moe</td>
-                        <td class="my-text-ellipsis">댓글2</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">3</td>
-                        <td class="my-text-ellipsis">Dooley</td>
-                        <td class="my-text-ellipsis">댓글3</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
+                    <c:forEach items="${replyList}" var="reply">
+                        <tr>
+                            <td style="text-align: center;" class="my-text-ellipsis">${reply.id}</td>
+                            <td class="my-text-ellipsis">${reply.username}</td>
+                            <td class="my-text-ellipsis">${reply.comment}</td>
+                            <td class="my-text-ellipsis">${reply.createdAt}</td>
+                            <td><span class="badge bg-secondary">삭제</span></td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>

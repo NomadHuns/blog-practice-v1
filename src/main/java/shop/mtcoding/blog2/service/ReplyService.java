@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.mtcoding.blog2.dto.reply.ReplyReq.ReplySaveReqDto;
+import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailAdminRespDto;
 import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailRespDto;
 import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
@@ -42,6 +43,11 @@ public class ReplyService {
         return replyDto;
     }
 
+    public List<ReplyDetailAdminRespDto> getReplyListAdmin() {
+        List<ReplyDetailAdminRespDto> replyDto = replyRepository.findAllWithUser();
+        return replyDto;
+    }
+
     @Transactional
     public void delete(int replyId, Integer principalId) {
         Reply replyPS = replyRepository.findById(replyId);
@@ -54,7 +60,7 @@ public class ReplyService {
         try {
             replyRepository.deleteById(replyId);
         } catch (Exception e) {
-            log.error("서버에러 : " + e.getMessage()); 
+            log.error("서버에러 : " + e.getMessage());
             throw new CustomApiException("댓글쓰기 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

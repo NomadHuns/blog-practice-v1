@@ -23,27 +23,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">1</td>
-                        <td class="my-text-ellipsis">제목1</td>
-                        <td class="my-text-ellipsis">내용1</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">2</td>
-                        <td class="my-text-ellipsis">제목2</td>
-                        <td class="my-text-ellipsis">내용2</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">3</td>
-                        <td class="my-text-ellipsis">제목3</td>
-                        <td class="my-text-ellipsis">내용3</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
+                    <c:forEach items="${boardList}" var="board">
+                        <tr>
+                            <td style="text-align: center;" class="my-text-ellipsis">${board.id}</td>
+                            <td class="my-text-ellipsis">${board.title}</td>
+                            <td class="my-text-ellipsis">${board.content}</td>
+                            <td class="my-text-ellipsis">${board.createdAt}</td>
+                            <td><span class="badge bg-secondary">삭제</span></td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>

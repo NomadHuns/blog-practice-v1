@@ -23,27 +23,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <c:forEach items="${userList}" var="user">
                     <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">1</td>
-                        <td class="my-text-ellipsis">Doe</td>
-                        <td class="my-text-ellipsis">john@example.com</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
+                        <td style="text-align: center;" class="my-text-ellipsis">${user.id}</td>
+                        <td class="my-text-ellipsis">${user.username}</td>
+                        <td class="my-text-ellipsis">${user.email}</td>
+                        <td class="my-text-ellipsis">${user.createdAt}</td>
                         <td><span class="badge bg-secondary">삭제</span></td>
                     </tr>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">2</td>
-                        <td class="my-text-ellipsis">Moe</td>
-                        <td class="my-text-ellipsis">mary@example.com</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">3</td>
-                        <td class="my-text-ellipsis">Dooley</td>
-                        <td class="my-text-ellipsis">july@example.com</td>
-                        <td class="my-text-ellipsis">2022.05.13</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>

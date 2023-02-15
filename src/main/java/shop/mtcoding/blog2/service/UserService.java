@@ -1,5 +1,7 @@
 package shop.mtcoding.blog2.service;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +45,12 @@ public class UserService {
     public User findById(int principalId) {
         User principal = userRepository.findById(principalId);
         return principal;
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> findAll() {
+        List<User> userPSList = userRepository.findAll();
+        return userPSList;
     }
 
     @Transactional
