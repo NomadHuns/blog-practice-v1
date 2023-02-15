@@ -3,3 +3,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.my-table {
+    width: 100%;
+    table-layout: fixed;
+}
