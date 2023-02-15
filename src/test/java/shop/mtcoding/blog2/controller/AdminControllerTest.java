@@ -1,8 +1,10 @@
 package shop.mtcoding.blog2.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Timestamp;
@@ -77,6 +79,57 @@ public class AdminControllerTest {
         ResultActions resultActions = mvc.perform(get("/admin").session(mockSession));
 
         // then
+        resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteBoard_test() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(delete("/admin/board/" + id).session(mockSession));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("디버그 : " + responseBody);
+
+        // then
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteUser_test() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(delete("/admin/user/" + id).session(mockSession));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("디버그 : " + responseBody);
+
+        // then
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteReply_test() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(delete("/admin/reply/" + id).session(mockSession));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("디버그 : " + responseBody);
+
+        /*
+         * jsonPath
+         * 최상위 : $
+         * 객체탐색 : .
+         * 배열 : [0]
+         */
+        // then
+        resultActions.andExpect(jsonPath("$.code").value(1));
         resultActions.andExpect(status().isOk());
     }
 }
