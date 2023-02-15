@@ -24,15 +24,32 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${replyList}" var="reply">
-                        <tr>
+                        <tr id="reply-${reply.id}">
                             <td style="text-align: center;" class="my-text-ellipsis">${reply.id}</td>
                             <td class="my-text-ellipsis">${reply.username}</td>
                             <td class="my-text-ellipsis">${reply.comment}</td>
                             <td class="my-text-ellipsis">${reply.createdAt}</td>
-                            <td><span class="badge bg-secondary">삭제</span></td>
+                            <td><button onclick="deleteById(${reply.id})" class="badge bg-secondary">삭제</span></td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
         </div>
+
+        <script>
+            function deleteById(id) {
+                $.ajax({
+                    type: "delete",
+                    url: "/admin/reply/" + id,
+                    dataType: "json",
+                })
+                    .done((res) => { // 20X일 때
+                        alert(res.msg);
+                        $("#reply-" + id).remove();
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    })
+            }
+        </script>
         <%@ include file="../layout/footer.jsp" %>

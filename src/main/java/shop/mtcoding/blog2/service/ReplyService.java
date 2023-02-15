@@ -17,6 +17,7 @@ import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.BoardRepository;
 import shop.mtcoding.blog2.model.Reply;
 import shop.mtcoding.blog2.model.ReplyRepository;
+import shop.mtcoding.blog2.model.UserRepository;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -25,6 +26,7 @@ import shop.mtcoding.blog2.model.ReplyRepository;
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void save(ReplySaveReqDto replySaveReqDto, int pincipalId) {
@@ -55,13 +57,15 @@ public class ReplyService {
             throw new CustomApiException("댓글이 존재하지 않습니다");
         }
         if (replyPS.getUserId() != principalId) {
-            throw new CustomApiException("댓글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
+            if (!userRepository.findById(principalId).getRole().equals("admin")) {
+                throw new CustomApiException("댓글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
+            }
         }
         try {
             replyRepository.deleteById(replyId);
         } catch (Exception e) {
             log.error("서버에러 : " + e.getMessage());
-            throw new CustomApiException("댓글쓰기 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomApiException("댓글 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
