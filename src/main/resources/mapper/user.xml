@@ -5,7 +5,7 @@
 
 <mapper namespace="shop.mtcoding.blog2.model.UserRepository">
    <select id="findAll" resultType="shop.mtcoding.blog2.model.User">
-      select * from user_tb
+      select * from user_tb where role != 'admin'
    </select>
    <select id="findById" resultType="shop.mtcoding.blog2.model.User">
       select * from user_tb where id = #{id}

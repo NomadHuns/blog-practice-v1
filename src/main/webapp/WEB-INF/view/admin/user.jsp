@@ -24,15 +24,32 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${userList}" var="user">
-                    <tr>
-                        <td style="text-align: center;" class="my-text-ellipsis">${user.id}</td>
-                        <td class="my-text-ellipsis">${user.username}</td>
-                        <td class="my-text-ellipsis">${user.email}</td>
-                        <td class="my-text-ellipsis">${user.createdAt}</td>
-                        <td><span class="badge bg-secondary">삭제</span></td>
-                    </tr>
+                        <tr id="user-${user.id}">
+                            <td style="text-align: center;" class="my-text-ellipsis">${user.id}</td>
+                            <td class="my-text-ellipsis">${user.username}</td>
+                            <td class="my-text-ellipsis">${user.email}</td>
+                            <td class="my-text-ellipsis">${user.createdAt}</td>
+                            <td><button class="badge bg-secondary" onclick="deleteById(${user.id})">삭제</span></td>
+                        </tr>
                     </c:forEach>
                 </tbody>
             </table>
         </div>
+
+        <script>
+            function deleteById(id) {
+                $.ajax({
+                    type: "delete",
+                    url: "/admin/user/" + id,
+                    dataType: "json",
+                })
+                    .done((res) => { // 20X일 때
+                        alert(res.msg);
+                        $("#user-" + id).remove();
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    })
+            }
+        </script>
         <%@ include file="../layout/footer.jsp" %>

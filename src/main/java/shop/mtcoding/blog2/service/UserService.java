@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.user.UserReq.JoinReqDto;
 import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
+import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.model.UserRepository;
@@ -67,5 +68,25 @@ public class UserService {
             throw new CustomException("프로필 변경 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return userPS;
+    }
+
+    @Transactional
+    public void delete(int userId, int principalId) {
+        User requestUserPS = findById(principalId);
+        User userPS = findById(userId);
+
+        if (userPS == null) {
+            throw new CustomApiException("존재하지 않는 유저입니다");
+        }
+        if (principalId != userId) {
+            if (!requestUserPS.getRole().equals("admin")) {
+                throw new CustomApiException("권한이 없습니다", HttpStatus.FORBIDDEN);
+            }
+        }
+        try {
+            userRepository.deleteById(userId);
+        } catch (Exception e) {
+            throw new CustomApiException("유저 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
