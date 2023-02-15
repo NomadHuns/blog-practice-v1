@@ -24,15 +24,32 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${boardList}" var="board">
-                        <tr>
+                        <tr id="board-${board.id}">
                             <td style="text-align: center;" class="my-text-ellipsis">${board.id}</td>
                             <td class="my-text-ellipsis">${board.title}</td>
                             <td class="my-text-ellipsis">${board.content}</td>
                             <td class="my-text-ellipsis">${board.createdAt}</td>
-                            <td><span class="badge bg-secondary">삭제</span></td>
+                            <td><button onclick="deleteById(${board.id})" class="badge bg-secondary">삭제</span></td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
         </div>
+
+        <script>
+            function deleteById(id) {
+                $.ajax({
+                    type: "delete",
+                    url: "/admin/board/" + id,
+                    dataType: "json",
+                })
+                    .done((res) => { // 20X일 때
+                        alert(res.msg);
+                        $("#board-" + id).remove();
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    })
+            }
+        </script>
         <%@ include file="../layout/footer.jsp" %>

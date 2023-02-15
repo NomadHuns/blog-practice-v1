@@ -15,6 +15,7 @@ import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.BoardRepository;
+import shop.mtcoding.blog2.model.UserRepository;
 import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Transactional(readOnly = true)
@@ -22,6 +23,7 @@ import shop.mtcoding.blog2.util.JsoupUtil;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void save(BoardSaveReqDto boardSaveReqDto, int userId) {
@@ -53,13 +55,15 @@ public class BoardService {
     }
 
     @Transactional
-    public void delete(int id, int userId) {
+    public void delete(int id, int principalId) {
         Board boardPS = boardRepository.findById(id);
         if (boardPS == null) {
             throw new CustomApiException("존재하지 않는 게시물입니다");
         }
-        if (boardPS.getUserId() != userId) {
-            throw new CustomApiException("해당 게시글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
+        if (boardPS.getUserId() != principalId) {
+            if (!userRepository.findById(principalId).getRole().equals("admin")) {
+                throw new CustomApiException("해당 게시글을 삭제할 권한이 없습니다", HttpStatus.FORBIDDEN);
+            }
         }
         try {
             boardRepository.deleteById(boardPS.getId());
