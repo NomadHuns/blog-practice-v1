@@ -23,23 +23,13 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <c:forEach items="${userList}" var="user">
-                        <tr id="user-${user.id}">
-                            <td style="text-align: center;" class="my-text-ellipsis">${user.id}</td>
-                            <td class="my-text-ellipsis">${user.username}</td>
-                            <td class="my-text-ellipsis">${user.email}</td>
-                            <td class="my-text-ellipsis">${user.createdAt}</td>
-                            <td><button class="badge bg-secondary" onclick="deleteById(${user.id})">삭제</span></td>
-                        </tr>
-                    </c:forEach>
                 </tbody>
             </table>
             <div class="d-flex justify-content-center">
                 <div style="width: 50%;">
                     <form class="d-flex" id="search" onsubmit="searchSubmit()">
-                        <input id="searchString" class="form-control me-2" type="text" placeholder="검색" onkeyup="search()">
-                        <button id="searchButton" class="btn btn-primary" type="button"
-                            onclick="search()">Search</button>
+                        <input id="searchString" class="form-control me-2" type="text" placeholder="검색"
+                            onkeyup="search()">
                     </form>
                 </div>
             </div>
@@ -64,36 +54,60 @@
             $('#searchString').keydown(function (e) {
                 if (e.keyCode == 13) {
                     e.preventDefault();
-                    $('#searchButton').click();
                 }
             });
             function search() {
-                let searchString = $("#searchString").val()
-                $.ajax({
-                    type: "post",
-                    url: "/admin/user/search",
-                    headers: {
-                        'Content-type': 'text/plain; charset=UTF-8',
-                    },
-                    data: searchString,
-                    dataType: "json",
-                })
-                    .done((res) => { // 20X일 때
-                        $("#tableBody").empty();
-                        for (let i = 0; i < res.data.length; i++) {
-                            let el = `<tr id="board-` + res.data[i].id + `,">` +
-                                `<td style="text-align: center;" class="my-text-ellipsis">` + res.data[i].id + `</td>` +
-                                `<td class="my-text-ellipsis">` + res.data[i].username + `</td>` +
-                                `<td class="my-text-ellipsis">` + res.data[i].email + `</td>` +
-                                `<td class="my-text-ellipsis">` + res.data[i].createdAt + `</td>` +
-                                `<td><button onclick="deleteById(` + res.data[i].id + `)" class="badge bg-secondary">삭제</span></td>
-                                </tr>`;
-                            $("#tableBody").append(el);
-                        }
+                if ($("#searchString").val() == "") {
+                    $.ajax({
+                        type: "get",
+                        url: "/admin/user/search",
+                        dataType: "json",
                     })
-                    .fail((err) => { // 40X, 50X일 때
-                        console.log("error",err.responseJSON.msg);
+                        .done((res) => { // 20X일 때
+                            $("#tableBody").empty();
+                            for (let i = 0; i < res.data.length; i++) {
+                                let el = `<tr id="board-` + res.data[i].id + `,">` +
+                                    `<td style="text-align: center;" class="my-text-ellipsis">` + res.data[i].id + `</td>` +
+                                    `<td class="my-text-ellipsis">` + res.data[i].username + `</td>` +
+                                    `<td class="my-text-ellipsis">` + res.data[i].email + `</td>` +
+                                    `<td class="my-text-ellipsis">` + res.data[i].createdAt + `</td>` +
+                                    `<td><button onclick="deleteById(` + res.data[i].id + `)" class="badge bg-secondary">삭제</span></td>
+                    </tr>`;
+                                $("#tableBody").append(el);
+                            }
+                        })
+                        .fail((err) => { // 40X, 50X일 때
+                            console.log("error", err.responseJSON.msg);
+                        })
+                } else {
+                    let searchString = $("#searchString").val();
+                    $.ajax({
+                        type: "post",
+                        url: "/admin/user/search",
+                        headers: {
+                            'Content-type': 'text/plain; charset=UTF-8',
+                        },
+                        data: searchString,
+                        dataType: "json",
                     })
+                        .done((res) => { // 20X일 때
+                            $("#tableBody").empty();
+                            for (let i = 0; i < res.data.length; i++) {
+                                let el = `<tr id="board-` + res.data[i].id + `,">` +
+                                    `<td style="text-align: center;" class="my-text-ellipsis">` + res.data[i].id + `</td>` +
+                                    `<td class="my-text-ellipsis">` + res.data[i].username + `</td>` +
+                                    `<td class="my-text-ellipsis">` + res.data[i].email + `</td>` +
+                                    `<td class="my-text-ellipsis">` + res.data[i].createdAt + `</td>` +
+                                    `<td><button onclick="deleteById(` + res.data[i].id + `)" class="badge bg-secondary">삭제</span></td>
+                    </tr>`;
+                                $("#tableBody").append(el);
+                            }
+                        })
+                        .fail((err) => { // 40X, 50X일 때
+                            console.log("error", err.responseJSON.msg);
+                        })
+                }
             }
+            search();
         </script>
         <%@ include file="../layout/footer.jsp" %>

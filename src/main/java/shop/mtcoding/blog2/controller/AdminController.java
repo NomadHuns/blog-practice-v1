@@ -43,14 +43,18 @@ public class AdminController {
         if (!principal.getRole().equals("admin")) {
             throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
         }
-        List<User> userPSList = userService.findAll();
-        model.addAttribute("userList", userPSList);
         return "admin/user";
     }
 
     @PostMapping("/admin/user/search")
     public ResponseEntity<?> searchUser(@RequestBody String searchString) {
         List<User> userPSList = userService.searchByUsername(searchString);
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", userPSList), HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/user/search")
+    public ResponseEntity<?> searchUser() {
+        List<User> userPSList = userService.findAll();
         return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", userPSList), HttpStatus.OK);
     }
 
@@ -63,9 +67,13 @@ public class AdminController {
         if (!principal.getRole().equals("admin")) {
             throw new CustomApiException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
         }
-        List<Board> boardPSList = boardService.getBoardListAdmin();
-        model.addAttribute("boardList", boardPSList);
         return "admin/board";
+    }
+
+    @GetMapping("/admin/board/search")
+    public ResponseEntity<?> searchBoard() {
+        List<Board> boardPSList = boardService.getBoardListAdmin();
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", boardPSList), HttpStatus.OK);
     }
 
     @PostMapping("/admin/board/search")
@@ -83,9 +91,13 @@ public class AdminController {
         if (!principal.getRole().equals("admin")) {
             throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
         }
-        List<ReplyDetailAdminRespDto> replyPSList = replyService.getReplyListAdmin();
-        model.addAttribute("replyList", replyPSList);
         return "admin/reply";
+    }
+
+    @GetMapping("/admin/reply/search")
+    public ResponseEntity<?> searchReply() {
+        List<ReplyDetailAdminRespDto> replyPSList = replyService.getReplyListAdmin();
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", replyPSList), HttpStatus.OK);
     }
 
     @PostMapping("/admin/reply/search")
