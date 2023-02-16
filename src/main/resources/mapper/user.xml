@@ -26,6 +26,6 @@
       select * from user_tb where username = #{username}
    </select>
    <select id="findByUsernameLike" resultType="shop.mtcoding.blog2.model.User">
-      select * from user_tb where username like CONCAT('%',#{searchString},'%')
+      select * from user_tb where username like CONCAT('%',#{searchString},'%') and role != 'admin'
    </select>
 </mapper>
