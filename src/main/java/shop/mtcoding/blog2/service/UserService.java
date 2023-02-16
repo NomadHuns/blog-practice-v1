@@ -49,6 +49,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public List<User> searchByUsername(String searchString) {
+        List<User> userPSList = userRepository.findByUsernameLike(searchString);
+        return userPSList;
+    }
+
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         List<User> userPSList = userRepository.findAll();
         return userPSList;

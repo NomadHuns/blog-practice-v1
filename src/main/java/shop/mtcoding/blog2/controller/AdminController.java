@@ -48,6 +48,12 @@ public class AdminController {
         return "admin/user";
     }
 
+    @PostMapping("/admin/user/search")
+    public ResponseEntity<?> searchUser(@RequestBody String searchString) {
+        List<User> userPSList = userService.searchByUsername(searchString);
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", userPSList), HttpStatus.OK);
+    }
+
     @GetMapping("/admin/board")
     public String board(Model model) {
         User principal = (User) session.getAttribute("principal");
@@ -63,7 +69,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/board/search")
-    public ResponseEntity<?> searchBoard(@RequestBody String searchString, Model model) {
+    public ResponseEntity<?> searchBoard(@RequestBody String searchString) {
         List<Board> boardPSList = boardService.searchBoardList(searchString);
         return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", boardPSList), HttpStatus.OK);
     }

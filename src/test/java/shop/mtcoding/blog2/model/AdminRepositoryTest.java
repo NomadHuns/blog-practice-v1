@@ -16,6 +16,9 @@ public class AdminRepositoryTest {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     public void findByTitleOrContent_test() throws Exception {
         // given
@@ -29,5 +32,20 @@ public class AdminRepositoryTest {
         System.out.println("테스트 : " + responseBody);
         // verify
         assertThat(boardListRespDtos.get(0).getTitle()).isEqualTo("열번째 글입니다.");
+    }
+
+    @Test
+    public void findByUsernameLike_test() throws Exception {
+        // given
+        ObjectMapper om = new ObjectMapper();
+        String searchString = "ssa";
+
+        // when
+        List<User> user = userRepository.findByUsernameLike(searchString);
+        System.out.println("테스트 : size() : " + user.size());
+        String responseBody = om.writeValueAsString(user);
+        System.out.println("테스트 : " + responseBody);
+        // verify
+        assertThat(user.get(0).getUsername()).isEqualTo("ssar");
     }
 }

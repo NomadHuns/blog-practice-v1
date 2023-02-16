@@ -96,6 +96,25 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void searchUser_test() throws Exception {
+        // given
+        String searchString = "ssa";
+
+        // when
+        ResultActions resultActions = mvc
+                .perform(post("/admin/user/search")
+                        .content(searchString)
+                        .contentType(MediaType.TEXT_PLAIN_VALUE).session(mockSession));
+        String script = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + script);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(jsonPath("$.data[0].id").value(1));
+    }
+
+    @Test
     public void board_test() throws Exception {
         // given
 
