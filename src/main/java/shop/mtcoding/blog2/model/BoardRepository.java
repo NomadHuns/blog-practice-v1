@@ -14,6 +14,8 @@ public interface BoardRepository {
 
         public Board findById(int id);
 
+        public List<Board> findByTitleOrContent(String searchString);
+
         public int insert(@Param("title") String title, @Param("content") String content,
                         @Param("thumbnail") String thumbnail, @Param("userId") int userId);
 

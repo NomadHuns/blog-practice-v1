@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import lombok.RequiredArgsConstructor;
 import shop.mtcoding.blog2.dto.ResponseDto;
 import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailAdminRespDto;
 import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
+import shop.mtcoding.blog2.ex.CustomApiException;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.Board;
 import shop.mtcoding.blog2.model.User;
@@ -50,14 +52,20 @@ public class AdminController {
     public String board(Model model) {
         User principal = (User) session.getAttribute("principal");
         if (principal == null) {
-            throw new CustomException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
+            throw new CustomApiException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
         }
         if (!principal.getRole().equals("admin")) {
-            throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
+            throw new CustomApiException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
         }
         List<Board> boardPSList = boardService.getBoardListAdmin();
         model.addAttribute("boardList", boardPSList);
         return "admin/board";
+    }
+
+    @PostMapping("/admin/board/search")
+    public ResponseEntity<?> searchBoard(@RequestBody String searchString, Model model) {
+        List<Board> boardPSList = boardService.searchBoardList(searchString);
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", boardPSList), HttpStatus.OK);
     }
 
     @GetMapping("/admin/reply")

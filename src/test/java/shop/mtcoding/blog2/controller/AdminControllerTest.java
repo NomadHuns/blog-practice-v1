@@ -114,6 +114,25 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void searchBoard_test() throws Exception {
+        // given
+        String searchString = "열";
+
+        // when
+        ResultActions resultActions = mvc
+                .perform(post("/admin/board/search")
+                        .content(searchString)
+                        .contentType(MediaType.TEXT_PLAIN_VALUE).session(mockSession));
+        String script = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + script);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(jsonPath("$.data[0].id").value(10));
+    }
+
+    @Test
     public void reply_test() throws Exception {
         // given
 

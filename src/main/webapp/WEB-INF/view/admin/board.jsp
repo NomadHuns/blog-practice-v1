@@ -22,7 +22,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody">
                     <c:forEach items="${boardList}" var="board">
                         <tr id="board-${board.id}">
                             <td style="text-align: center;" class="my-text-ellipsis">${board.id}</td>
@@ -34,6 +34,15 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                <div style="width: 50%;">
+                    <form class="d-flex" id="search">
+                        <input id="searchString" class="form-control me-2" type="text" placeholder="검색">
+                        <button id="searchButton" class="btn btn-primary" type="button"
+                            onclick="search()">Search</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -46,6 +55,34 @@
                     .done((res) => { // 20X일 때
                         alert(res.msg);
                         $("#board-" + id).remove();
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    })
+            }
+            function search() {
+                let searchString = $("#searchString").val()
+                $.ajax({
+                    type: "post",
+                    url: "/admin/board/search",
+                    headers: {
+                        'Content-type': 'text/plain; charset=UTF-8',
+                    },
+                    data: searchString,
+                    dataType: "json",
+                })
+                    .done((res) => { // 20X일 때
+                        $("#tableBody").empty();
+                        for (let i = 0; i < res.data.length; i++) {
+                            let el = `<tr id="board-` + res.data[i].id + `,">` +
+                                `<td style="text-align: center;" class="my-text-ellipsis">` + res.data[i].id + `</td>` +
+                                `<td class="my-text-ellipsis">` + res.data[i].title + `</td>` +
+                                `<td class="my-text-ellipsis">` + res.data[i].content + `</td>` +
+                                `<td class="my-text-ellipsis">` + res.data[i].createdAt + `</td>` +
+                                `<td><button onclick="deleteById(` + res.data[i].id + `)" class="badge bg-secondary">삭제</span></td>
+                                </tr>`;
+                            $("#tableBody").append(el);
+                        }
                     })
                     .fail((err) => { // 40X, 50X일 때
                         alert(err.responseJSON.msg);
