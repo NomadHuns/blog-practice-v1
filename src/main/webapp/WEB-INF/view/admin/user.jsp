@@ -36,8 +36,8 @@
             </table>
             <div class="d-flex justify-content-center">
                 <div style="width: 50%;">
-                    <form class="d-flex" id="search">
-                        <input id="searchString" class="form-control me-2" type="text" placeholder="검색">
+                    <form class="d-flex" id="search" onsubmit="searchSubmit()">
+                        <input id="searchString" class="form-control me-2" type="text" placeholder="검색" onkeyup="search()">
                         <button id="searchButton" class="btn btn-primary" type="button"
                             onclick="search()">Search</button>
                     </form>
@@ -60,7 +60,14 @@
                         alert(err.responseJSON.msg);
                     })
             }
-            function search() { 
+
+            $('#searchString').keydown(function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    $('#searchButton').click();
+                }
+            });
+            function search() {
                 let searchString = $("#searchString").val()
                 $.ajax({
                     type: "post",
@@ -85,7 +92,7 @@
                         }
                     })
                     .fail((err) => { // 40X, 50X일 때
-                        alert(err.responseJSON.msg);
+                        console.log("error",err.responseJSON.msg);
                     })
             }
         </script>
