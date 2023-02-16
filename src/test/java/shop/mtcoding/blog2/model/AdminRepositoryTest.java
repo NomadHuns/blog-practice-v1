@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import shop.mtcoding.blog2.dto.reply.ReplyResp.ReplyDetailAdminRespDto;
+
 @MybatisTest
 public class AdminRepositoryTest {
 
@@ -18,6 +20,9 @@ public class AdminRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Test
     public void findByTitleOrContent_test() throws Exception {
@@ -47,5 +52,21 @@ public class AdminRepositoryTest {
         System.out.println("테스트 : " + responseBody);
         // verify
         assertThat(user.get(0).getUsername()).isEqualTo("ssar");
+    }
+
+    @Test
+    public void findByLikeCommentOrUsernameWithUser_test() throws Exception {
+        // given
+        ObjectMapper om = new ObjectMapper();
+        String searchString = "ssa";
+
+        // when
+        List<ReplyDetailAdminRespDto> ReplyDtoList = replyRepository.findByLikeCommentOrUsernameWithUser(searchString);
+        System.out.println("테스트 : size() : " + ReplyDtoList.size());
+        String responseBody = om.writeValueAsString(ReplyDtoList);
+        System.out.println("테스트 : " + responseBody);
+        // verify
+        assertThat(ReplyDtoList.get(0).getUsername()).isEqualTo("ssar");
+        assertThat(ReplyDtoList.get(0).getComment()).isEqualTo("1번째 댓글입니다.");
     }
 }

@@ -50,6 +50,12 @@ public class ReplyService {
         return replyDto;
     }
 
+    @Transactional(readOnly = true)
+    public List<ReplyDetailAdminRespDto> searchBySearchString(String searchString) {
+        List<ReplyDetailAdminRespDto> replyPSList = replyRepository.findByLikeCommentOrUsernameWithUser(searchString);
+        return replyPSList;
+    }
+
     @Transactional
     public void delete(int replyId, Integer principalId) {
         Reply replyPS = replyRepository.findById(replyId);

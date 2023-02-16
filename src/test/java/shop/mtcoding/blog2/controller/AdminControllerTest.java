@@ -152,6 +152,25 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void searchReply_test() throws Exception {
+        // given
+        String searchString = "ssa";
+
+        // when
+        ResultActions resultActions = mvc
+                .perform(post("/admin/reply/search")
+                        .content(searchString)
+                        .contentType(MediaType.TEXT_PLAIN_VALUE).session(mockSession));
+        String script = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("테스트 : " + script);
+
+        // then
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(jsonPath("$.data[0].comment").value("1번째 댓글입니다."));
+    }
+
+    @Test
     public void reply_test() throws Exception {
         // given
 

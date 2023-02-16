@@ -88,6 +88,12 @@ public class AdminController {
         return "admin/reply";
     }
 
+    @PostMapping("/admin/reply/search")
+    public ResponseEntity<?> searchReply(@RequestBody String searchString) {
+        List<ReplyDetailAdminRespDto> replyPSList = replyService.searchBySearchString(searchString);
+        return new ResponseEntity<>(new ResponseDto<>(1, "검색 성공", replyPSList), HttpStatus.OK);
+    }
+
     @GetMapping("/admin/loginForm")
     public String loginForm() {
         return "admin/loginForm";
