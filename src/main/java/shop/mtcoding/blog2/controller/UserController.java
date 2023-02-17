@@ -16,7 +16,6 @@ import shop.mtcoding.blog2.dto.user.UserReq.LoginReqDto;
 import shop.mtcoding.blog2.ex.CustomException;
 import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.UserService;
-import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,19 +25,16 @@ public class UserController {
 
     @GetMapping("/joinForm")
     public String joinForm(Model model) throws IOException {
-        JsoupUtil.stockMarket(model);
         return "user/joinForm";
     }
 
     @GetMapping("/loginForm")
     public String loginForm(Model model) throws IOException {
-        JsoupUtil.stockMarket(model);
         return "user/loginForm";
     }
 
     @GetMapping("/user/updateForm")
     public String updateForm(Model model) throws IOException {
-        JsoupUtil.stockMarket(model);
         return "user/updateForm";
     }
 

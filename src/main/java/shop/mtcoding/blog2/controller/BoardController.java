@@ -31,7 +31,6 @@ import shop.mtcoding.blog2.model.User;
 import shop.mtcoding.blog2.service.BoardService;
 import shop.mtcoding.blog2.service.LoveService;
 import shop.mtcoding.blog2.service.ReplyService;
-import shop.mtcoding.blog2.util.JsoupUtil;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,7 +44,6 @@ public class BoardController {
     public String main(Model model) throws IOException {
         List<BoardListRespDto> boardList = boardService.getBoardList();
         model.addAttribute("boardList", boardList);
-        JsoupUtil.stockMarket(model);
         return "board/list";
     }
 
@@ -56,11 +54,12 @@ public class BoardController {
         User principal = (User) session.getAttribute("principal");
         if (principal != null) {
             Love lovePS = loveService.getLove(id, principal.getId());
-            model.addAttribute("love", lovePS);
+            model.addAttribute("myLove", lovePS);
         }
+        List<Love> lovePSList = loveService.findByBoardId(id);
+        model.addAttribute("loveList", lovePSList);
         model.addAttribute("board", board);
         model.addAttribute("replyList", replyList);
-        JsoupUtil.stockMarket(model);
         return "board/detail";
     }
 
@@ -70,7 +69,6 @@ public class BoardController {
         if (principal == null) {
             throw new CustomException("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED, "/loginForm");
         }
-        JsoupUtil.stockMarket(model);
         return "board/writeForm";
     }
 
@@ -82,7 +80,6 @@ public class BoardController {
         }
         BoardDetailRespDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
-        JsoupUtil.stockMarket(model);
         return "board/updateForm";
     }
 
