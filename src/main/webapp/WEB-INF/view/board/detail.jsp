@@ -21,7 +21,15 @@
             </div>
             <hr />
             <div class="pb-3">
-                <i id="heart" class="fa-regular fa-heart my-xl my-cursor fa-lg" onclick="heart()"></i>
+                <c:choose>
+                   <c:when test="${love != null}">
+                    <i id="heart" class="fa-regular fa-heart my-xl my-cursor fa-lg fa-solid" onclick="heart(${board.id})"></i>
+                   </c:when>
+                
+                   <c:otherwise>
+                    <i id="heart" class="fa-regular fa-heart my-xl my-cursor fa-lg" onclick="heart(${board.id})"></i>
+                   </c:otherwise>
+                </c:choose>
             </div>
 
             <div class="card">
@@ -62,10 +70,21 @@
         </div>
 
         <script>
-            function heart() {
+            function heart(boardId) {
                 if ($("#heart").hasClass("fa-solid")) {
                     $("#heart").removeClass("fa-solid");
                 } else {
+                    $.ajax({
+                        type: "get",
+                        url: "/board/" + boardId + "/love",
+                        dataType: "json",
+                    })
+                    .done((res) => { // 20X일 때
+                        alert(res.msg);
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    })
                     $("#heart").addClass("fa-solid");
                 }
             }
