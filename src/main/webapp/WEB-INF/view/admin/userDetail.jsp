@@ -6,7 +6,7 @@
             </div>
             <hr>
             <div class="d-flex">
-                <img src="${principal.profile == null ? '/images/profile.jfif' : principal.profile}"
+                <img src="${user.profile == null ? '/images/profile.jfif' : user.profile}"
                     class="img-thumbnail" alt="Cinque Terre" style="width: 30%; height: 200px;">
                 <table class="table table-bordered my-0">
                     <tbody>

@@ -22,7 +22,7 @@
             <hr />
             <div class="pb-3">
                 <c:choose>
-                   <c:when test="${love != null}">
+                   <c:when test="${myLove != null}">
                     <i id="heart" class="fa-regular fa-heart my-xl my-cursor fa-lg fa-solid" onclick="heart(${board.id})"></i>
                    </c:when>
                 
@@ -30,6 +30,7 @@
                     <i id="heart" class="fa-regular fa-heart my-xl my-cursor fa-lg" onclick="heart(${board.id})"></i>
                    </c:otherwise>
                 </c:choose>
+                ${fn:length(loveList)}
             </div>
 
             <div class="card">
@@ -79,6 +80,7 @@
                     })
                     .done((res) => { // 20X일 때
                         alert(res.msg);
+                        location.reload();
                     })
                     .fail((err) => { // 40X, 50X일 때
                         alert(err.responseJSON.msg);
@@ -92,6 +94,7 @@
                     })
                     .done((res) => { // 20X일 때
                         alert(res.msg);
+                        location.reload();
                     })
                     .fail((err) => { // 40X, 50X일 때
                         alert(err.responseJSON.msg);
