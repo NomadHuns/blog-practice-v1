@@ -8,10 +8,10 @@
                 </div>
             </c:if>
 
-            <div class="mb-2">
+
+            <div>
                 글 번호 : <span id="id"><i>${board.id} </i></span> 작성자 : <span><i>${board.username} </i></span>
             </div>
-
             <div>
                 <h3>${board.title}</h3>
             </div>
@@ -20,6 +20,9 @@
                 <div>${board.content}</div>
             </div>
             <hr />
+            <div class="pb-3">
+                <i id="heart" class="fa-regular fa-heart my-xl my-cursor fa-lg" onclick="heart()"></i>
+            </div>
 
             <div class="card">
                 <form action="/reply" method="post">
@@ -59,6 +62,14 @@
         </div>
 
         <script>
+            function heart() {
+                if ($("#heart").hasClass("fa-solid")) {
+                    $("#heart").removeClass("fa-solid");
+                } else {
+                    $("#heart").addClass("fa-solid");
+                }
+            }
+
             function deleteById(id) {
                 $.ajax({
                     type: "delete",
