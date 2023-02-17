@@ -72,6 +72,17 @@
         <script>
             function heart(boardId) {
                 if ($("#heart").hasClass("fa-solid")) {
+                    $.ajax({
+                        type: "delete",
+                        url: "/board/" + boardId + "/love",
+                        dataType: "json",
+                    })
+                    .done((res) => { // 20X일 때
+                        alert(res.msg);
+                    })
+                    .fail((err) => { // 40X, 50X일 때
+                        alert(err.responseJSON.msg);
+                    });
                     $("#heart").removeClass("fa-solid");
                 } else {
                     $.ajax({
@@ -84,7 +95,7 @@
                     })
                     .fail((err) => { // 40X, 50X일 때
                         alert(err.responseJSON.msg);
-                    })
+                    });
                     $("#heart").addClass("fa-solid");
                 }
             }
