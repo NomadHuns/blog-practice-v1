@@ -1,0 +1,37 @@
+package shop.mtcoding.blog2.service;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import shop.mtcoding.blog2.ex.CustomApiException;
+import shop.mtcoding.blog2.model.BoardRepository;
+import shop.mtcoding.blog2.model.Love;
+import shop.mtcoding.blog2.model.LoveRepository;
+
+@Service
+@RequiredArgsConstructor
+public class LoveService {
+    private final LoveRepository loveRepository;
+    private final BoardRepository boardRepository;
+
+    public Love getLove(int boardId, int pincipalId){
+        Love loveTemp = new Love(boardId, pincipalId);
+        return loveRepository.findByBoardIdAndUserId(loveTemp);
+    }
+
+    public void doLove(int boardId, int pincipalId) {
+        Love loveTemp = new Love(boardId, pincipalId);
+        if (boardRepository.findById(boardId) == null) {
+            throw new CustomApiException("존재하지 않는 게시물 입니다");
+        }
+        if (loveRepository.findByBoardIdAndUserId(loveTemp) != null) {
+            throw new CustomApiException("이미 좋아요한 게시물 입니다");
+        }
+        try {
+            loveRepository.insert(loveTemp);
+        } catch (Exception e) {
+            throw new CustomApiException("서버 오류 : 좋아요 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
