@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop.mtcoding.blog2.model.LoveRepository">
+   <select id="findAll" resultType="shop.mtcoding.blog2.model.Love">
+      select * from love_tb
+   </select>
+   <select id="findById" resultType="shop.mtcoding.blog2.model.Love">
+      select * from love_tb where id = #{id}
+   </select>
+   <insert id="insert">
+      insert into love_tb(user_id, board_id, created_at) values(#{userId}, #{boardId}, now())
+   </insert>
+   <delete id="deleteById">
+      delete from love_tb where id = #{id}
+   </delete>   
+   <update id="updateById">
+      update love_tb set user_id = #{userId}, board_id = #{boardId}, created_at = #{createdAt} where id = #{id}
+   </update>
+   <select id="findByBoardIdAndUserId" resultType="shop.mtcoding.blog2.model.Love">
+      select * from love_tb where board_id = #{boardId} and user_id = #{userId}
+   </select>
+</mapper>
