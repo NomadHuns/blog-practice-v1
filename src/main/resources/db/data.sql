@@ -18,4 +18,11 @@ insert into reply_tb(comment, user_id, board_id, created_at) values('2번째 댓
 insert into reply_tb(comment, user_id, board_id, created_at) values('3번째 댓글입니다.', 2, 1, now());
 insert into reply_tb(comment, user_id, board_id, created_at) values('4번째 댓글입니다.', 2, 2, now());
 
+insert into love_tb(user_id, board_id, created_at) values(1, 1, now());
+insert into love_tb(user_id, board_id, created_at) values(1, 2, now());
+insert into love_tb(user_id, board_id, created_at) values(1, 3, now());
+insert into love_tb(user_id, board_id, created_at) values(2, 1, now());
+insert into love_tb(user_id, board_id, created_at) values(2, 2, now());
+insert into love_tb(user_id, board_id, created_at) values(2, 3, now());
+
 commit; 
