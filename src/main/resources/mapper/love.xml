@@ -22,4 +22,7 @@
    <select id="findByBoardIdAndUserId" resultType="shop.mtcoding.blog2.model.Love">
       select * from love_tb where board_id = #{boardId} and user_id = #{userId}
    </select>
+   <select id="findByBoardId" resultType="shop.mtcoding.blog2.model.Love">
+      select * from love_tb where board_id = #{boardId}
+   </select>
 </mapper>

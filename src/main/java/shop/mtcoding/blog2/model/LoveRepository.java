@@ -17,4 +17,6 @@ public interface LoveRepository {
         public int updateById(Love love);
 
         public Love findByBoardIdAndUserId(Love love);
+
+        public List<Love> findByBoardId(int boardId);
 }

@@ -1,5 +1,7 @@
 package shop.mtcoding.blog2.service;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ public class LoveService {
     private final LoveRepository loveRepository;
     private final BoardRepository boardRepository;
 
-    public Love getLove(int boardId, int pincipalId){
+    public Love getLove(int boardId, int pincipalId) {
         Love loveTemp = new Love(boardId, pincipalId);
         return loveRepository.findByBoardIdAndUserId(loveTemp);
     }
@@ -46,5 +48,10 @@ public class LoveService {
         } catch (Exception e) {
             throw new CustomApiException("서버 오류 : 좋아요 취소 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public List<Love> findByBoardId(int boardId) {
+        List<Love> LovePSList = loveRepository.findByBoardId(boardId);
+        return LovePSList;
     }
 }
