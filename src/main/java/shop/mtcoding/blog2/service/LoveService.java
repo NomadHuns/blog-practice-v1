@@ -34,4 +34,17 @@ public class LoveService {
             throw new CustomApiException("서버 오류 : 좋아요 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public void deleteLove(int boardId, Integer pincipalId) {
+        Love loveTemp = new Love(boardId, pincipalId);
+        if (boardRepository.findById(boardId) == null) {
+            throw new CustomApiException("존재하지 않는 게시물 입니다");
+        }
+        Love lovePS = loveRepository.findByBoardIdAndUserId(loveTemp);
+        try {
+            loveRepository.deleteById(lovePS.getId());
+        } catch (Exception e) {
+            throw new CustomApiException("서버 오류 : 좋아요 취소 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
