@@ -35,6 +35,7 @@
             </div>
         </div>
 
+
         <script>
             function deleteById(id) {
                 $.ajax({
@@ -68,7 +69,7 @@
                             for (let i = 0; i < res.data.length; i++) {
                                 let el = `<tr id="board-` + res.data[i].id + `,">` +
                                     `<td style="text-align: center;" class="my-text-ellipsis">` + res.data[i].id + `</td>` +
-                                    `<td class="my-text-ellipsis">` + res.data[i].username + `</td>` +
+                                    `<td class="my-text-ellipsis"><a href="/admin/user/` + res.data[i].id + `">` + res.data[i].username + `</a></td>` +
                                     `<td class="my-text-ellipsis">` + res.data[i].email + `</td>` +
                                     `<td class="my-text-ellipsis">` + res.data[i].createdAt + `</td>` +
                                     `<td><button onclick="deleteById(` + res.data[i].id + `)" class="badge bg-secondary">삭제</span></td>

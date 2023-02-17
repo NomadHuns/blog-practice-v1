@@ -46,6 +46,20 @@ public class AdminController {
         return "admin/user";
     }
 
+    @GetMapping("/admin/user/{id}")
+    public String userDetail(@PathVariable("id") int id ,Model model) {
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomException("로그인이 필요합니다", HttpStatus.UNAUTHORIZED, "/admin/loginForm");
+        }
+        if (!principal.getRole().equals("admin")) {
+            throw new CustomException("권한이 없습니다", HttpStatus.FORBIDDEN, "/");
+        }
+        User userPS = userService.findById(id);
+        model.addAttribute("user",userPS);
+        return "admin/userDetail";
+    }
+
     @PostMapping("/admin/user/search")
     public ResponseEntity<?> searchUser(@RequestBody String searchString) {
         List<User> userPSList = userService.searchByUsername(searchString);
